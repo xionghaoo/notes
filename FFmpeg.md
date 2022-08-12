@@ -32,9 +32,23 @@
 
 
 
+## 常用命令
+
+1. JPG图片转YUV图片
+
+```shell
+$ ffmpeg.exe -i .\yuv_test.jpeg -s 600x600 -pix_fmt yuvj420p test.yuv
+```
 
 
-## 案例
+
+
+
+## 参考资料
 
 [electron播放本地任意格式的视频](https://blog.csdn.net/daodfs111/article/details/108370254)
+
+[音视频入门、进阶、提升书籍推荐](https://blog.csdn.net/taotao86520/article/details/115689772)
+
+[FFmpeg 视频处理入门教程](https://www.ruanyifeng.com/blog/2020/01/ffmpeg.html)
 
