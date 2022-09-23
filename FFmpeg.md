@@ -40,6 +40,17 @@
 $ ffmpeg.exe -i .\yuv_test.jpeg -s 600x600 -pix_fmt yuvj420p test.yuv
 ```
 
+2. MP3转pcm格式
+
+```shell
+$ ffmpeg.exe -i .\shuangmianyanxun.mp3 -ss 0 -t 30 -acodec pcm_s32le -f s32le -ac 2 -ar 44100 gh_pcm32le_44100.pcm
+```
+
++ ``-t`` 转换时长
++ ``-acodec pcm_s32le`` 输出pcm格式，采用signed 32编码，字节序为小尾端（大尾端为be）;
++ ``-ar 44100`` 采样率44100HZ
++ ``-ac 2`` 声道数2
+
 
 
 
