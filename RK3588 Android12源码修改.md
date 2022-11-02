@@ -32,6 +32,18 @@
   forcedDensity="160"	/>
 ```
 
+### 修改设备文件权限
+
+所在文件`system/core/rootdir/ueventd.rc`
+
+修改内容
+
+```
+/dev/uinput    0777   uhid   uhid
+```
+
+
+
 
 
 
