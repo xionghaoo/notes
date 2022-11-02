@@ -38,7 +38,7 @@
 
 修改内容
 
-```
+```shell
 /dev/uinput    0777   uhid   uhid
 ```
 
