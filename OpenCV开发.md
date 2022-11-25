@@ -114,7 +114,118 @@ make install
    )
    ```
 
-   
+
+## OpenCV JS编译
+
+[官方文档](https://docs.opencv.org/4.x/d4/da1/tutorial_js_setup.html)
+
+***注意`emsdk`必须要激活2.0.10版本的，不然会报错***
+
+本地文件路径:
+
+```
+opencv
+	- opencv-4.x
+	- opencv_contrib-4.x
+	- emsdk
+```
+
+
+
+4.x版本的opencv js编译脚本包含contrib的编译，只需要修改[build_js.py](https://github.com/opencv/opencv/blob/4.x/platforms/js/build_js.py)，在Cmake的编译选项后加上opencv_contrib的依赖路径
+
+```python
+ def get_cmake_cmd(self):
+        cmd = [
+            "cmake",
+            "-DPYTHON_DEFAULT_EXECUTABLE=%s" % sys.executable,
+               "-DENABLE_PIC=FALSE", # To workaround emscripten upstream backend issue https://github.com/emscripten-core/emscripten/issues/8761
+               "-DCMAKE_BUILD_TYPE=Release",
+               "-DCMAKE_TOOLCHAIN_FILE='%s'" % self.get_toolchain_file(),
+               "-DCPU_BASELINE=''",
+               "-DCMAKE_INSTALL_PREFIX=/usr/local",
+               "-DCPU_DISPATCH=''",
+               "-DCV_TRACE=OFF",
+               "-DBUILD_SHARED_LIBS=OFF",
+               "-DWITH_1394=OFF",
+               "-DWITH_ADE=OFF",
+               "-DWITH_VTK=OFF",
+               "-DWITH_EIGEN=OFF",
+               "-DWITH_FFMPEG=OFF",
+               "-DWITH_GSTREAMER=OFF",
+               "-DWITH_GTK=OFF",
+               "-DWITH_GTK_2_X=OFF",
+               "-DWITH_IPP=OFF",
+               "-DWITH_JASPER=OFF",
+               "-DWITH_JPEG=OFF",
+               "-DWITH_WEBP=OFF",
+               "-DWITH_OPENEXR=OFF",
+               "-DWITH_OPENGL=OFF",
+               "-DWITH_OPENVX=OFF",
+               "-DWITH_OPENNI=OFF",
+               "-DWITH_OPENNI2=OFF",
+               "-DWITH_PNG=OFF",
+               "-DWITH_TBB=OFF",
+               "-DWITH_TIFF=OFF",
+               "-DWITH_V4L=OFF",
+               "-DWITH_OPENCL=OFF",
+               "-DWITH_OPENCL_SVM=OFF",
+               "-DWITH_OPENCLAMDFFT=OFF",
+               "-DWITH_OPENCLAMDBLAS=OFF",
+               "-DWITH_GPHOTO2=OFF",
+               "-DWITH_LAPACK=OFF",
+               "-DWITH_ITT=OFF",
+               "-DWITH_QUIRC=ON",
+               "-DBUILD_ZLIB=ON",
+               "-DBUILD_opencv_apps=OFF",
+            	# Aruco码依赖项
+               "-DBUILD_opencv_calib3d=ON",
+               "-DBUILD_opencv_dnn=OFF",
+            	# Aruco码依赖项
+               "-DBUILD_opencv_features2d=ON",
+            	# Aruco码依赖项
+               "-DBUILD_opencv_flann=ON",  # No bindings provided. This module is used as a dependency for other modules.
+               "-DBUILD_opencv_gapi=OFF",
+               "-DBUILD_opencv_ml=OFF",
+               "-DBUILD_opencv_photo=OFF",
+               "-DBUILD_opencv_imgcodecs=OFF",
+               "-DBUILD_opencv_shape=OFF",
+               "-DBUILD_opencv_videoio=OFF",
+               "-DBUILD_opencv_videostab=OFF",
+               "-DBUILD_opencv_highgui=OFF",
+               "-DBUILD_opencv_superres=OFF",
+               "-DBUILD_opencv_stitching=OFF",
+               "-DBUILD_opencv_java=OFF",
+               "-DBUILD_opencv_js=ON",
+               "-DBUILD_opencv_python2=OFF",
+               "-DBUILD_opencv_python3=OFF",
+               "-DBUILD_EXAMPLES=OFF",
+               "-DBUILD_PACKAGE=OFF",
+               "-DBUILD_TESTS=OFF",
+               "-DBUILD_PERF_TESTS=OFF",
+            	# 自定义编译模块
+               "-DBUILD_opencv_aruco=ON",
+               "-DBUILD_opencv_video=OFF",
+               "-DBUILD_opencv_objdetect=OFF",
+            	# opencv_contrib依赖路径
+               "-DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib-4.x/modules"]
+```
+
+我们可以在执行脚本的前期输出内容中看到本次编译包含哪些模块，哪些模块被排除在外
+
+```shell
+--   OpenCV modules:
+--     To be built:                 aruco bioinspired calib3d core dpm features2d flann fuzzy hfs img_hash imgproc intensity_transform js line_descriptor objdetect phase_unwrapping plot rapid reg rgbd saliency structured_light surface_matching xfeatures2d
+--     Disabled:                    dnn highgui imgcodecs ml photo shape stitching superres video videoio videostab world
+--     Disabled by dependency:      barcode bgsegm ccalib datasets dnn_objdetect dnn_superres face mcc optflow quality stereo text tracking ts wechat_qrcode ximgproc xobjdetect xphoto
+--     Unavailable:                 alphamat cudaarithm cudabgsegm cudacodec cudafeatures2d cudafilters cudaimgproc cudalegacy cudaobjdetect cudaoptflow cudastereo cudawarping cudev cvv freetype gapi hdf java julia matlab ovis python2 python3 sfm viz
+```
+
+`Disabled by dependency`表示编译的模块缺少相关依赖模块。
+
+
+
+
 
 ## 常见异常
 

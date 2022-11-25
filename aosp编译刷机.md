@@ -33,3 +33,5 @@ $ fastboot reboot
 ## 参考文章
 
 [android源码编译并刷入nexus 6p手机](https://blog.csdn.net/chen1234219/article/details/90342071)
+
+[aosp 编译过程中Jack server SSL error 错误解决方法](https://segmentfault.com/a/1190000039970343)
