@@ -38,21 +38,111 @@ PRODUCT_PROPERTY_OVERRIDES += ro.sf.lcd_density=240
 /dev/uinput    0777   uhid   uhid
 ```
 
-### 预置App
+### 系统预装App
 
 系统签名预置路径 `vendor/rockchip/common/apps/`
+
+最后需要将app添加到PRODUCT_PACKAGES里面：
+
+修改文件: `device/rockchip/common/device.mk`
+
+```mk
+PRODUCT_PACKAGES += \
+    TouchService
+```
+
+编译后的app会添加到`out/target/product/rk3588_s/system/app/`这个路径下
+
+#### 1. TouchService App
+
++ `Android.mk`: 路径`vendor/rockchip/common/apps/TouchService/Android.mk`
+
+  ```mk
+  ###############################################################################
+  # TouchService
+  LOCAL_PATH := $(call my-dir)
+  include $(CLEAR_VARS)
+  LOCAL_MODULE := TouchService
+  LOCAL_MODULE_CLASS := APPS
+  LOCAL_MODULE_TAGS := optional
+  # LOCAL_BUILT_MODULE_STEM := package.apk
+  LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
+  #LOCAL_PRIVILEGED_MODULE :=
+  LOCAL_CERTIFICATE := PRESIGNED
+  #LOCAL_OVERRIDES_PACKAGES := 
+  LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
+  LOCAL_ENFORCE_USES_LIBRARIES := false
+  LOCAL_PREBUILT_JNI_LIBS := \
+  	@lib/arm64-v8a/libc++_shared.so \
+  	@lib/arm64-v8a/libimage_processing_util_jni.so \
+  	@lib/arm64-v8a/libjpeg-turbo1500.so \
+  	@lib/arm64-v8a/libopencv_java3.so \
+  	@lib/arm64-v8a/librobocontroller.so \
+  	@lib/arm64-v8a/libTouchScreenCore.so \
+  	@lib/arm64-v8a/libusb100.so \
+  	@lib/arm64-v8a/libuvc.so \
+  	@lib/arm64-v8a/libUVCCamera.so 
+  include $(BUILD_PREBUILT)
+  ```
+
++ `TouchService.apk`: 路径`vendor/rockchip/common/apps/TouchService/TouchService.apk`
+
++ so文件: 路径`vendor/rockchip/common/apps/TouchService/lib/arm64-v8a/*.so`
+
+### RK预装APP
+
+apk放置路径: 
+
++ `device/rockchip/rk3588/rk3588_s/preinstall`: 应用不能删除
++ `device/rockchip/rk3588/rk3588_s/preinstall_del`: 应用能删除，但是系统重启后会恢复
++ `device/rockchip/rk3588/rk3588_s/preinstall_del_forever`: 应用能永久删除
+
+直接将Apk放到对应文件夹，如果没有就自己创建，编译时会自动生成所需文件，生成的app放置在:
+
++ `out/target/product/rk3588_s/odm/bundled_persist-app`
++ `out/target/product/rk3588_s/odm/bundled_uninstall_back-app`
 
 ### 系统Webview替换
 
 [更新Android系统自带的Webview](http://www.vaststargames.com/read.php?tid=26&fid=13&page=1#172)
 
+1. 下载最新的webview apk包，替换`external/chromium-webview/prebuilt`下各个架构的`webview.apk`
 
+2.  修改文件`frameworks/base/core/res/res/values/config.xml`，增加下面的内容
+
+   ```xml
+   <resources>
+    ...
+       <string name="config_webViewPackageName" translatable="false">com.google.android.webview</string>
+   </resources>
+   ```
+
+3. 修改文件`frameworks/base/core/res/res/xml/config_webview_packages.xml`
+
+   ```xml
+   <webviewproviders>
+       <!-- The default WebView implementation -->
+       <webviewprovider description="Android WebView" packageName="com.google.android.webview" availableByDefault="true">
+       </webviewprovider>
+   </webviewproviders>
+   ```
 
 ### 系统不锁屏不休眠
 
 [AOSP-不锁屏不休眠](https://blog.csdn.net/qq23001186/article/details/122416169)
 
+### 移除系统导航栏
 
+路径: `frameworks/base/packages/SystemUI/src/com/android/systemui/statusbar/phone/StatusBar.java`
+
+```java
+protected void makeStatusBarView(@Nullable RegisterStatusBarResult result) {
+    ...
+    // remove navigation bar
+    // createNavigationBar(result);
+    ...
+}
+```
 
 
 

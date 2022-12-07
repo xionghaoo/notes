@@ -121,13 +121,13 @@ make install
 
 ***注意`emsdk`必须要激活2.0.10版本的，不然会报错***
 
-本地文件路径:
+本地目录结构:
 
 ```
 opencv
-	- opencv-4.x
-	- opencv_contrib-4.x
-	- emsdk
+  - opencv-4.x
+  - opencv_contrib-4.x
+  - emsdk
 ```
 
 
