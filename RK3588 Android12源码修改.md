@@ -176,7 +176,7 @@ mmma ./frameworks/base/packages/SystemUI/
 
 输出位置：`out/target/product/rk3588_s/system_ext/priv-app/SystemUI/SystemUI.apk`
 
-修改文件：`frameworks/base/packages/SystemUI/src/com/android/systemui/navigationbar/NavigationBarController.java`
+修改文件：`frameworks/base/packages/SystemUI/src/com/android/systemui/navigationbar/NavigationBarView.java`
 
 ```java
 private boolean shouldDeadZoneConsumeTouchEvents(MotionEvent event) {
