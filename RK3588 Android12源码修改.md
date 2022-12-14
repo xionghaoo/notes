@@ -131,18 +131,52 @@ apk放置路径:
 
 [AOSP-不锁屏不休眠](https://blog.csdn.net/qq23001186/article/details/122416169)
 
+#### 不锁屏
+
+修改文件：`frameworks/base/packages/SettingsProvider/res/values/defaults.xml`
+
+```xml
+<bool name="def_lockscreen_disabled">true</bool>
+```
+
+#### 不休眠
+
+修改文件：`frameworks/base/packages/SettingsProvider/res/values/defaults.xml`
+
+```xml
+<integer name="def_screen_off_timeout">0</integer>
+```
+
+60000改为0，0默认是永久不锁屏，这个配置在`packages/apps/Settings/src/com/android/settings/display/ScreenTimeoutPreferenceController.java`中有用到。
+
+重新编译：
+
+```shell
+mmma ./framework/base/packages/SettingsProvider/
+```
+
+输出位置：`out/target/product/rk3588_s/system/priv-app/SettingsProvider/SettingsProvider.apk`
+
 ### 移除系统导航栏
 
-路径: `frameworks/base/packages/SystemUI/src/com/android/systemui/statusbar/phone/StatusBar.java`
+修改文件：`frameworks/base/packages/SystemUI/src/com/android/systemui/navigationbar/NavigationBarController.java`
 
 ```java
-protected void makeStatusBarView(@Nullable RegisterStatusBarResult result) {
-    ...
-    // remove navigation bar
-    // createNavigationBar(result);
-    ...
+void createNavigationBar(Display display, Bundle savedState, RegisterStatusBarResult result) {
+    // 注释掉这句话
+  	// mNavigationBars.put(displayId, navBar);
 }
 ```
+
+重新编译：
+
+```shell
+mmma ./frameworks/base/packages/SystemUI/
+```
+
+输出位置：`out/target/product/rk3588_s/system_ext/priv-app/SystemUI/SystemUI.apk`
+
+### 修改导航栏的位置
 
 
 
