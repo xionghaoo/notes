@@ -141,7 +141,7 @@ apk放置路径:
 
 #### 不休眠
 
-修改文件：`frameworks/base/packages/SettingsProvider/res/values/defaults.xml`
+(无效)修改文件：`frameworks/base/packages/SettingsProvider/res/values/defaults.xml`
 
 ```xml
 <integer name="def_screen_off_timeout">0</integer>
@@ -157,9 +157,17 @@ mmma ./framework/base/packages/SettingsProvider/
 
 输出位置：`out/target/product/rk3588_s/system/priv-app/SettingsProvider/SettingsProvider.apk`
 
+修改文件：`device/rockchip/rk3588/overlay/framworks/base/packages/SettingsProvider/res/values/default.xml`
+
+```xml
+ <integer name="def_screen_off_timeout">0</integer>
+```
+
+6000改为0
+
 ### 移除系统导航栏
 
-修改文件：`frameworks/base/packages/SystemUI/src/com/android/systemui/navigationbar/NavigationBarController.java`
+(无效)修改文件：`frameworks/base/packages/SystemUI/src/com/android/systemui/navigationbar/NavigationBarController.java`
 
 ```java
 void createNavigationBar(Display display, Bundle savedState, RegisterStatusBarResult result) {
@@ -176,17 +184,32 @@ mmma ./frameworks/base/packages/SystemUI/
 
 输出位置：`out/target/product/rk3588_s/system_ext/priv-app/SystemUI/SystemUI.apk`
 
-修改文件：`frameworks/base/packages/SystemUI/src/com/android/systemui/navigationbar/NavigationBarView.java`
+true改为false
 
-```java
-private boolean shouldDeadZoneConsumeTouchEvents(MotionEvent event) {
-    setSlippery(false);
-}
+修改文件：`device/rockchip/common/overlay/framworks/base/core/res/res/values/config.xml`
+
+```xml
+<bool name="config_showNavigationBar">false</bool>
+
+<bool name="config_swipe_up_gesture_setting_available">false</bool>
 ```
 
 true改为false
 
+修改文件：`frameworks/base/packages/SystemUI/src/com/android/statusbar/phone/StatusBar.java`
+
+```java
+protected void makeStatusBarView(@Nullable RegisterStatusBarResult result) { 
+    Log.i(TAG, "xionghaoo remove navigationbar")
+    // createNavigationBar(result);
+}
+```
+
+
+
 ### 修改导航栏的位置
 
 
+
+com.android.internal.systemui.navbar.threebutton
 
